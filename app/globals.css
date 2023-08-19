@@ -79,4 +79,9 @@ html,body, :root {
   body {
     @apply bg-background text-foreground;
   }
+
+}
+
+.dashboard-menu {
+  @apply text-sm flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition
 }
