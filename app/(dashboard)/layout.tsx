@@ -9,7 +9,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <main className="md:pl-72">
         <Navbar />
-        Hello Main content {children}
+        {children}
       </main>
     </div>
   );
