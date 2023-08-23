@@ -1,11 +1,17 @@
 "use client";
 
 import Heading from "@/components/Heading";
+import * as z from "zod";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { formSchema } from "./constants";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+// Zod is for frontend form validation
 
 const Conversation = () => {
-  const form = useForm({
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
       prompt: "",
     },
