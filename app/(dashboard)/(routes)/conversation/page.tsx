@@ -6,6 +6,8 @@ import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 // Zod is for frontend form validation
 
@@ -17,6 +19,13 @@ const Conversation = () => {
     },
   });
 
+  // The form has its own state
+  const isLoading = form.formState.isSubmitting;
+
+  const onSubmit = async (value: z.infer<typeof formSchema>) => {
+    console.log(value)
+  };
+
   return (
     <div>
       <Heading
@@ -26,7 +35,24 @@ const Conversation = () => {
         iconColor="text-violet-500"
         bgColor="bg-violet-500/10"
       />
-      <div className="px-4 lg:px-8"></div>
+      <div className="px-4 lg:px-8">
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="form-style">
+            <FormField name="prompt" render={({ field }) => (
+              <FormItem className="col-span-12 lg:col-span-10">
+                <FormControl className="m-0 p-0">
+                  <Input className="form-input"
+                    disabled={isLoading}
+                    placeholder="How do I get better at things"
+                    {...field}
+                  />
+
+                </FormControl>
+              </FormItem>
+            )} />
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };

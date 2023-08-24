@@ -89,3 +89,11 @@ html,body, :root {
 .tool-card {
   @apply p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer
 }
+
+.form-style {
+  @apply rounded-lg border w-full p-4 px-3 md:px-6 focus-within:shadow-sm grid grid-cols-12 gap-2
+}
+
+.form-input {
+  @apply border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent
+}
