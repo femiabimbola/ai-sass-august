@@ -1,7 +1,8 @@
 "use client";
 
-import Heading from "@/components/Heading";
+
 import * as z from "zod";
+import axios from "axios";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
@@ -9,10 +10,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Heading from "@/components/Heading";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { ChatCompletionRequestMessage } from "openai";
 
 // Zod is for frontend form validation
 
 const Conversation = () => {
+  const router = useRouter()
+  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -24,7 +32,13 @@ const Conversation = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
-    console.log(value)
+    try {
+
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      router.refresh()
+    }
   };
 
   return (
