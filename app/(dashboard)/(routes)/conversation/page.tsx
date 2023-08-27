@@ -14,6 +14,9 @@ import Heading from "@/components/Heading";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ChatCompletionRequestMessage } from "openai";
+import { Empty } from "@/components/empty";
+import { Loader } from "@/components/Loader";
+import { cn } from "@/lib/utils";
 
 // Zod is for frontend form validation
 
@@ -31,8 +34,16 @@ const Conversation = () => {
   // The form has its own state
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (value: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      const userMessage: ChatCompletionRequestMessage = {
+        role: "user",
+        content: values.prompt
+      }
+      const newMessages = [...messages, userMessage]
+      const response = await axios.post('/api/conversation', { messages: newMessages });
+      setMessages(current => [...current, userMessage, response.data]);
+      form.reset();
 
     } catch (error: any) {
       console.log(error);
@@ -72,7 +83,23 @@ const Conversation = () => {
         </Form>
       </div>
       <div className="space-y-4 mt-4">
-        Messages content
+        {isLoading && (
+          <div className="p=8 rounded-lg w-full flex items-center justify-center bg-muted">
+            <Loader />
+          </div>
+        )}
+        {messages.length === 0 && !isLoading && (
+          <div>
+            <Empty label=" No conversation started" />
+          </div>
+        )}
+        <div className="flex flex-col-reverse gap-y-4">
+          {messages.map(message => (
+            <div key={message.name} className={cn("p-8 w-full flex items-start gap-x-8 rounded-lg", message.role === 'user' ? "bg-white border border-black/10" : 'bg-muted')}>
+              {message.content}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
