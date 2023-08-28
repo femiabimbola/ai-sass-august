@@ -22,7 +22,7 @@ import { BotAvatar } from "@/components/bot-avatar";
 
 // Zod is for frontend form validation
 
-const Conversation = () => {
+const Code = () => {
   const router = useRouter()
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
@@ -57,8 +57,8 @@ const Conversation = () => {
   return (
     <div>
       <Heading
-        title="Conversation"
-        description="The conversation with Tush AI"
+        title="Code Generation"
+        description="Generate Code with Tush AI"
         icon={MessageSquare}
         iconColor="text-violet-500"
         bgColor="bg-violet-500/10"
@@ -110,4 +110,4 @@ const Conversation = () => {
   );
 };
 
-export default Conversation;
+export default Code;
