@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Code } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,11 +18,10 @@ import { Loader } from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import { UserAvatar } from "@/components/user-avatar";
 import { BotAvatar } from "@/components/bot-avatar";
-import ReactMarkdown from "react-markdown";
 
 // Zod is for frontend form validation
 
-const CodePage = () => {
+const ImagePage = () => {
   const router = useRouter();
   const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
@@ -43,7 +42,7 @@ const CodePage = () => {
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/code", { messages: newMessages });
+      const response = await axios.post("/api/conversation", { messages: newMessages });
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error: any) {
@@ -56,11 +55,11 @@ const CodePage = () => {
   return (
     <div>
       <Heading
-        title="Code Generation"
-        description="Generate Code with Tush AI"
-        icon={Code}
-        iconColor="text-green-7  00"
-        bgColor="bg-green-700/10"
+        title="Image Generation"
+        description="Generate awesome Images with Tush AI"
+        icon={ImageIcon}
+        iconColor="text-violet-500"
+        bgColor="bg-violet-500/10"
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
@@ -76,7 +75,7 @@ const CodePage = () => {
                     <Input
                       className="form-input-conversation"
                       disabled={isLoading}
-                      placeholder="How can I connect Postgress to my Application?"
+                      placeholder="How do I get better at things"
                       {...field}
                     />
                   </FormControl>
@@ -113,24 +112,7 @@ const CodePage = () => {
               )}
             >
               {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
-              <ReactMarkdown
-                components={{
-                  pre: ({ node, ...props }) => (
-                    <div className="overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg">
-                      <pre {...props} />
-                    </div>
-                  ),
-                  code: ({ node, ...props }) => (
-                    <code
-                      className="bg-black/10 rounded-lg p-1"
-                      {...props}
-                    />
-                  ),
-                }}
-                className="text-sm overflow-hidden leading-7"
-              >
-                {message.content || ""}
-              </ReactMarkdown>
+              <p className="text-sm">{message.content}</p>
             </div>
           ))}
         </div>
@@ -139,4 +121,4 @@ const CodePage = () => {
   );
 };
 
-export default CodePage;
+export default ImagePage;
