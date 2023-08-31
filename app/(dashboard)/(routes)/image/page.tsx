@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { ImageIcon } from "lucide-react";
+import { Download, ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +17,8 @@ import { Loader } from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { SelectValue } from "@radix-ui/react-select";
+import { Card, CardFooter } from "@/components/ui/card";
+import Image from "next/image";
 
 // Zod is for frontend form validation
 
@@ -159,9 +161,22 @@ const ImagePage = () => {
           </div>
         )}
         {images.length === 0 && !isLoading && <Empty label=" No Images Generated" />}
-        <div>Images will be rendered</div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-4">
+          {images.map(src => (
+            <Card key={src} className="rounded-lg overflow-hidden">
+              <div className="relative aspect-square">
+                <Image alt="image" fill src={src} />
+              </div>
+              <CardFooter className="p-2">
+                <Button variant={"secondary"} className="w-full">
+                  <Download className="h-4 w-4 mr-2" />
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
+    </div >
   );
 };
 
