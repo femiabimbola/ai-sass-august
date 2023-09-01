@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { ImageIcon } from "lucide-react";
+import { Download, ImageIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,6 +17,8 @@ import { Loader } from "@/components/Loader";
 import { cn } from "@/lib/utils";
 import { Select, SelectContent, SelectItem, SelectTrigger } from "@/components/ui/select";
 import { SelectValue } from "@radix-ui/react-select";
+import { Card, CardFooter } from "@/components/ui/card";
+import Image from "next/image";
 
 // Zod is for frontend form validation
 
@@ -40,7 +42,7 @@ const ImagePage = () => {
     try {
       setImages([]);
       const response = await axios.post("/api/image", values);
-      // Important o bro  Console.log(values bro)
+      // Important o bro  Console.log(values bro )
       const urls = response.data.map((image: { url: string }) => image.url);
       setImages(urls);
       form.reset();
@@ -159,7 +161,31 @@ const ImagePage = () => {
           </div>
         )}
         {images.length === 0 && !isLoading && <Empty label=" No Images Generated" />}
-        <div>Images will be rendered</div>
+        <div className="grid grid-cols-1 md:gird-cols-2 lg:gird-cols-3 xl:grid-cols-4 gap-4 mt-8">
+          {images.map((src) => (
+            <Card
+              key={src}
+              className="rounded-lg overflow-hidden"
+            >
+              <div className="relative aspect-square">
+                <Image
+                  src={src}
+                  fill
+                  alt="image"
+                />
+              </div>
+              <CardFooter className="p-2">
+                <Button
+                  variant={"secondary"}
+                  className="w-full"
+                  onClick={() => window.open(src)}
+                >
+                  <Download className="h-4 w-4" />
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );
