@@ -13,3 +13,7 @@ https://github.com/AntonioErdeljac/next13-ai-saas
 ### The Task
 
 Update the openai package to v4
+
+2:48:30 for the api secret
+
+- Learn how to use webhook

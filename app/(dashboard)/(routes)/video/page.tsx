@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { MessageSquare, Music } from "lucide-react";
+import { MessageSquare, Music, VideoIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,9 +48,9 @@ const MusicPage = () => {
   return (
     <div>
       <Heading
-        title="Music Generation"
-        description="Generate awesome music with just prompt"
-        icon={Music}
+        title="Video Generation"
+        description="Generate video with just prompt"
+        icon={VideoIcon}
         iconColor="text-emerald-500"
         bgColor="bg-emerald-500/10"
       />
