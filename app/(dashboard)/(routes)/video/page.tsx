@@ -18,9 +18,9 @@ import { cn } from "@/lib/utils";
 
 // Zod is for frontend form validation
 
-const MusicPage = () => {
+const VideoPage = () => {
   const router = useRouter();
-  const [music, setMusic] = useState<string>();
+  const [video, setVideo] = useState<string>();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -34,9 +34,9 @@ const MusicPage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setMusic(undefined);
-      const response = await axios.post("/api/music", values);
-      setMusic(response.data.audio);
+      setVideo(undefined);
+      const response = await axios.post("/api/video", values);
+      setVideo(response.data[0]);
       form.reset();
     } catch (error: any) {
       console.log(error);
@@ -51,8 +51,8 @@ const MusicPage = () => {
         title="Video Generation"
         description="Generate video with just prompt"
         icon={VideoIcon}
-        iconColor="text-emerald-500"
-        bgColor="bg-emerald-500/10"
+        iconColor="text-orange-500"
+        bgColor="bg-orange-500/10"
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
@@ -90,22 +90,22 @@ const MusicPage = () => {
             <Loader />
           </div>
         )}
-        {!music && !isLoading && (
+        {!video && !isLoading && (
           <div>
-            <Empty label=" No Music Generated yet" />
+            <Empty label=" No Video Generated yet" />
           </div>
         )}
-        {music && (
-          <audio
+        {video && (
+          <video
             controls
-            className="w-full mt-8"
+            className="w-full aspect-video mt-8 rounded-lg border bg-black"
           >
-            <source src={music} />
-          </audio>
+            <source src={video} />
+          </video>
         )}
       </div>
     </div>
   );
 };
 
-export default MusicPage;
+export default VideoPage;
