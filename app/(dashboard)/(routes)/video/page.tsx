@@ -98,7 +98,7 @@ const VideoPage = () => {
         {video && (
           <video
             controls
-            className="w-full aspect-video mt-8 rounded-lg border bg-black"
+            className="flex items-center justify-center aspect-video mt-8 rounded-lg border bg-black"
           >
             <source src={video} />
           </video>
