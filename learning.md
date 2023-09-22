@@ -45,3 +45,7 @@ export default prismadb;
 - Everytime you modified your schema prisma, you have to push
 - Do npx prisma generate to generate abd models to node-modules
 - `npx prisma studio` let you see the model in real time
+
+### npm ERR! code ENOENT
+
+Solve the error by creating a file on \AppData\Roaming\npm

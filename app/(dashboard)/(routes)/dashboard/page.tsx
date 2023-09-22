@@ -64,7 +64,7 @@ const Dashboard = () => {
           >
             <div className="flex items-center gap-x-4">
               {/* Check out this div */}
-              <div className={cn("p-2 w-fit rounded-md", tool.bgColor)}>
+              <div className={cn("p-4 w-fit rounded-md", tool.bgColor)}>
                 <tool.icon className={cn("w-8 h-8", tool.color)} />
               </div>
               <div className="font-semibold">{tool.label}</div>
