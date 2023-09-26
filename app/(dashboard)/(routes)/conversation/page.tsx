@@ -49,7 +49,7 @@ const Conversation = () => {
       form.reset();
     } catch (error: any) {
       // It probably have different structure or might not be the rror
-      // The reason for an error 403
+      // The reason for an error 403 // It might happen
       if (error?.response?.status === 403) {
         proModal.onOpen();
       }
