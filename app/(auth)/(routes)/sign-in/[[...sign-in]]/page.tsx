@@ -1,7 +1,8 @@
-import { SignIn } from "@clerk/nextjs";
+import {SignIn} from "@clerk/nextjs";
 
 const Page = () => {
-    return <SignIn />
-}
+  console.log("here o");
+  return <SignIn />;
+};
 
 export default Page;

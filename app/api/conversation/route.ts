@@ -32,10 +32,11 @@ export async function POST(req: Request) {
     })
 
     await increaseApiLimit() 
-    
+    console.log('I got here')
     return NextResponse.json(response.data.choices[0].message);
 
   } catch (error) {
+    console.log("there is error")
     console.log("[conversation-error]", error)
     return new NextResponse("internal error", { status: 500 })
   }

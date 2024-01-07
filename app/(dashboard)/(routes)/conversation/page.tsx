@@ -2,23 +2,24 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { MessageSquare } from "lucide-react";
-import { useForm } from "react-hook-form";
-import { formSchema } from "./constants";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import {ChatCompletionRequestMessage} from "openai";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
+import {MessageSquare} from "lucide-react";
+import {useForm} from "react-hook-form";
+import {formSchema} from "./constants";
+import {zodResolver} from "@hookform/resolvers/zod";
+// Local Import
+import {Form, FormControl, FormField, FormItem} from "@/components/ui/form";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
 import Heading from "@/components/Heading";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ChatCompletionRequestMessage } from "openai";
-import { Empty } from "@/components/empty";
-import { Loader } from "@/components/Loader";
-import { cn } from "@/lib/utils";
-import { UserAvatar } from "@/components/user-avatar";
-import { BotAvatar } from "@/components/bot-avatar";
-import { useProModal } from "@/hooks/use-pro-modal";
+import {Empty} from "@/components/empty";
+import {Loader} from "@/components/Loader";
+import {cn} from "@/lib/utils";
+import {UserAvatar} from "@/components/user-avatar";
+import {BotAvatar} from "@/components/bot-avatar";
+import {useProModal} from "@/hooks/use-pro-modal";
 
 // Zod is for frontend form validation
 
@@ -44,7 +45,9 @@ const Conversation = () => {
         content: values.prompt,
       };
       const newMessages = [...messages, userMessage];
-      const response = await axios.post("/api/conversation", { messages: newMessages });
+      const response = await axios.post("/api/conversation", {
+        messages: newMessages,
+      });
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error: any) {
@@ -70,13 +73,10 @@ const Conversation = () => {
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="form-style"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="form-style">
             <FormField
               name="prompt"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem className="col-span-12 lg:col-span-10">
                   <FormControl className="m-0 p-0">
                     <Input
@@ -115,7 +115,9 @@ const Conversation = () => {
               key={message.content}
               className={cn(
                 "p-8 w-full flex items-start gap-x-8 rounded-lg",
-                message.role === "user" ? "bg-white border border-black/10" : "bg-muted"
+                message.role === "user"
+                  ? "bg-white border border-black/10"
+                  : "bg-muted"
               )}
             >
               {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
