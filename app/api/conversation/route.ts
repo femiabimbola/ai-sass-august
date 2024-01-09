@@ -26,13 +26,15 @@ export async function POST(req: Request) {
 
     if(!freeTrial) return  new NextResponse("No more free trial", { status: 403 })
 
-    const response = await openai.createChatCompletion({
-      model: 'gpt-3.5-turbo',
-      messages
-    })
+    
+    console.log('I got here')
+
+    // const response = await openai.createChatCompletion({
+    //   model: 'gpt-3.5-turbo',
+    //   messages
+    // })
 
     await increaseApiLimit() 
-    console.log('I got here')
     return NextResponse.json(response.data.choices[0].message);
 
   } catch (error) {
