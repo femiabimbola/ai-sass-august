@@ -31,8 +31,6 @@ export async function POST(req: Request) {
     if (!freeTrial)
       return new NextResponse("No more free trial", {status: 403});
 
-    console.log("I got here");
-
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages,
@@ -43,7 +41,7 @@ export async function POST(req: Request) {
 
     await increaseApiLimit();
     // return NextResponse.json(response.data.choices[0].message);
-    return NextResponse.json(completion.choices[0]);
+    return NextResponse.json(completion.choices[0].message);
   } catch (error) {
     console.log("there is error");
     console.log("[conversation-error]", error);
