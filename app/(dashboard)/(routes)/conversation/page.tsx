@@ -2,7 +2,8 @@
 
 import * as z from "zod";
 import axios from "axios";
-import {ChatCompletionRequestMessage} from "openai";
+// import {ChatCompletionRequestMessage} from "openai"; //Typescript error
+import OpenAI from "openai";
 import {useRouter} from "next/navigation";
 import {useState} from "react";
 import {MessageSquare} from "lucide-react";
@@ -24,10 +25,16 @@ import {useProModal} from "@/hooks/use-pro-modal";
 
 // Zod is for frontend form validation
 
+interface messageProp {
+  role: string;
+  content: string;
+}
+
 const Conversation = () => {
   const router = useRouter();
   const proModal = useProModal();
-  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  // const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
+  const [messages, setMessages] = useState<messageProp[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,18 +48,22 @@ const Conversation = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const userMessage: ChatCompletionRequestMessage = {
-        role: "user",
-        content: values.prompt,
+      // const userMessage: ChatCompletionRequestMessage = {
+      //   role: "user",
+      //   content: values.prompt,
+      // };
+      const userMessage: OpenAI.Chat.ChatCompletionCreateParams = {
+        messages: [{role: "user", content: values.prompt}],
+        model: "gpt-3.5-turbo",
       };
-      const newMessages = [...messages, userMessage];
+      const newMessages = [...messages, userMessage.messages[0]];
+      // const newMessages = [...messages, userMessage];
       const response = await axios.post("/api/conversation", {
         messages: newMessages,
       });
       setMessages((current) => [...current, userMessage, response.data]);
       form.reset();
     } catch (error: any) {
-      // It probably have different structure or might not be the rror
       // The reason for an error 403 // It might happen
       if (error?.response?.status === 403) {
         proModal.onOpen();
@@ -74,7 +85,10 @@ const Conversation = () => {
       />
       <div className="px-4 lg:px-8">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="form-style">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="form-style"
+          >
             <FormField
               name="prompt"
               render={({field}) => (
