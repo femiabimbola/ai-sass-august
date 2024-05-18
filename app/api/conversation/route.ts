@@ -1,14 +1,18 @@
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
-import { Configuration, OpenAIApi } from "openai"
+// import { Configuration, OpenAIApi } from "openai"
+import OpenAI from "openai"
 
 import { increaseApiLimit, checkApiLimit } from "@/lib/api-limit";
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY
-});
+// const configuration = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY
+// });
 
-const openai = new OpenAIApi(configuration)
+// const openai = new OpenAIApi(configuration)
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+})
 
 export async function POST(req: Request) {
   try {
@@ -18,7 +22,7 @@ export async function POST(req: Request) {
 
     if (!userId) return new NextResponse("Unathorized", { status: 401 })
 
-    if (!configuration.apiKey) return new NextResponse("OpenAI API key not configured", { status: 500 })
+    // if (!configuration.apiKey) return new NextResponse("OpenAI API key not configured", { status: 500 })
 
     if (!messages) return new NextResponse("Messages are required", { status: 400 })
 
@@ -34,8 +38,14 @@ export async function POST(req: Request) {
     //   messages
     // })
 
+    const completion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
+      messages
+    });
+
     await increaseApiLimit() 
-    return NextResponse.json(response.data.choices[0].message);
+    // return NextResponse.json(response.data.choices[0].message);
+    return NextResponse.json(completion.choices[0]);
 
   } catch (error) {
     console.log("there is error")
